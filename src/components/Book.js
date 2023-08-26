@@ -4,7 +4,7 @@ import AddBook from './AddBook';
 
 const BooksPage = () => (
   <>
-    <Books />
+    <Books title="Book One" author="Author One" />
     <AddBook />
   </>
 );

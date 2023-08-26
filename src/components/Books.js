@@ -7,12 +7,12 @@ function Books({ title, author }) {
       <div>
         <h3>
           Title:
-          {'me '}
+          {' '}
           {title}
         </h3>
         <h3>
           By:
-          {' me'}
+          {' '}
           {author}
         </h3>
       </div>
