@@ -4,7 +4,7 @@ import {
 } from 'react-router-dom';
 import Category from './components/Category';
 import Navbar from './components/Navigation';
-import BooksPage from './components/Book';
+import BooksPage from './components/BooksPage';
 
 function App() {
   return (

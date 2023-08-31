@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Books({ title, author }) {
+function Books({ title, author, onRemove }) {
   return (
     <div className="main">
       <div>
@@ -17,9 +17,9 @@ function Books({ title, author }) {
         </h3>
       </div>
       <div className="BookBtns">
-        <button type="button">Edit</button>
-        <span>|</span>
-        <button type="button">Remove</button>
+        <button type="button" onClick={onRemove}>
+          Remove
+        </button>
       </div>
     </div>
   );
@@ -28,6 +28,7 @@ function Books({ title, author }) {
 Books.propTypes = {
   title: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
+  onRemove: PropTypes.func.isRequired,
 };
 
 export default Books;
