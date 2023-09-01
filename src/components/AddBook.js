@@ -1,11 +1,24 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
+import { addBookAsync } from '../redux/books/booksSlice';
 
 function AddBook() {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const newBook = {
+      item_id: uuidv4(),
+      title,
+      author,
+      category: 'Fiction',
+    };
+    dispatch(addBookAsync(newBook));
+    setTitle('');
+    setAuthor('');
   };
 
   return (
