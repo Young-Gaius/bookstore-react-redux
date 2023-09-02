@@ -1,21 +1,21 @@
 import React from 'react';
-import {
-  BrowserRouter, Routes, Route,
-} from 'react-router-dom';
-import Category from './components/Category';
-import Navbar from './components/Navigation';
-import BooksPage from './components/Book';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './components/Home';
+import Categories from './components/Categories';
+import Navbar from './components/Navbar';
+import './App.css';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Navbar />
-
-      <Routes>
-        <Route path="/" element={<BooksPage />} />
-        <Route path="/categories" element={<Category />} />
-      </Routes>
-    </BrowserRouter>
+    <Router>
+      <div className="App-header">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/categories" element={<Categories />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
