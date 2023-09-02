@@ -1,35 +1,56 @@
-/* eslint-disable camelcase */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_BASE_URL = 'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/lcByrIsvBjn4ahAL2FCh/';
+function generateRandomId(length) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let id = '';
 
-export const fetchBooks = createAsyncThunk('books/fetchBooks', async () => {
-  const response = await axios.get(`${API_BASE_URL}books`);
-  return response.data;
-});
+  for (let i = 0; i < length; i += 1) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    id += characters.charAt(randomIndex);
+  }
 
-export const addBookAsync = createAsyncThunk('books/addBook', async (newBook) => {
-  const response = await axios.post(`${API_BASE_URL}books`, newBook);
-  return response.data;
-});
+  return id;
+}
 
-export const removeBookAsync = createAsyncThunk(
-  'books/removeBook',
-  async (itemId) => {
-    try {
-      await axios.delete(`${API_BASE_URL}books/${itemId}`);
-      return itemId;
-    } catch (error) {
-      return error;
-    }
-  },
-);
+const baseURL = 'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/IlUbvHHtHUdawBVeFkE9/books';
 
 const initialState = {
-  books: [],
+  book: [],
   isLoading: false,
 };
+
+export const fetchBooks = createAsyncThunk('books/fetchBooks', async () => {
+  try {
+    const response = await axios.get(baseURL);
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to fetch books');
+  }
+});
+
+export const addBook = createAsyncThunk('books/addBook', async (newBookData) => {
+  try {
+    const newBook = {
+      item_id: generateRandomId(10),
+      ...newBookData,
+    };
+
+    await axios.post(baseURL, newBook);
+  } catch (error) {
+    console.error('Error posting book:', error);
+    throw error;
+  }
+});
+
+export const removeBook = createAsyncThunk('books/removeBook', async (item_id) => {
+  try {
+    await axios.delete(`${baseURL}/${item_id}`);
+  } catch (error) {
+    console.error('Error removing book:', error);
+    throw error;
+  }
+});
 
 const booksSlice = createSlice({
   name: 'books',
@@ -52,7 +73,7 @@ const booksSlice = createSlice({
         return {
           ...state,
           isLoading: false,
-          books: booksArray,
+          book: booksArray,
         };
       })
 
@@ -60,32 +81,31 @@ const booksSlice = createSlice({
         ...state,
         isLoading: false,
       }))
-      .addCase(addBookAsync.pending, (state) => ({
+      .addCase(addBook.pending, (state) => ({
         ...state,
         isLoading: true,
       }))
-      .addCase(addBookAsync.fulfilled, (state, action) => ({
-        ...state,
-        isLoading: false,
-        books: [...state.books, action.payload],
-      }))
-      .addCase(addBookAsync.rejected, (state) => ({
+      .addCase(addBook.fulfilled, (state) => ({
         ...state,
         isLoading: false,
       }))
-      .addCase(removeBookAsync.pending, (state) => ({
+      .addCase(addBook.rejected, (state) => ({
+        ...state,
+        isLoading: false,
+      }))
+      .addCase(removeBook.pending, (state) => ({
         ...state,
         isLoading: true,
       }))
-      .addCase(removeBookAsync.fulfilled, (state, action) => {
+      .addCase(removeBook.fulfilled, (state, action) => {
         const itemIdToRemove = action.payload;
         return {
           ...state,
           isLoading: false,
-          books: state.books.filter((book) => book.item_id !== itemIdToRemove),
+          book: state.book.filter((book) => book.item_id !== itemIdToRemove),
         };
       })
-      .addCase(removeBookAsync.rejected, (state) => ({
+      .addCase(removeBook.rejected, (state) => ({
         ...state,
         isLoading: false,
       }));
