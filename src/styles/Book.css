@@ -20,6 +20,11 @@
   gap: 1rem;
 }
 
+.completed {
+  color: #121212;
+  opacity: 0.5;
+}
+
 .book-category {
   font-family: "Montserrat", sans-serif;
   font-size: 0.875rem;

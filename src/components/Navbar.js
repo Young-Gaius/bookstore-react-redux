@@ -9,14 +9,14 @@ const Navbar = () => (
     <a className="nav-brand" href="#/">Bookstore CMS</a>
     <ul className="nav-links">
       <li>
-        <NavLink className="nav-link active-link" to="/">Home</NavLink>
+        <NavLink className="nav-link active-link" to="/">Books</NavLink>
       </li>
       <li>
         <NavLink className="nav-link" to="/categories">Categories</NavLink>
       </li>
     </ul>
     <button className="icon-button" type="button">
-      <FontAwesomeIcon icon={faUser} />
+      <FontAwesomeIcon className="nav-brand" icon={faUser} />
     </button>
   </nav>
 );
